@@ -178,3 +178,4 @@ Executed in **5 two-week sprints** using Scrum methodology, with a Jira board, d
 | **Sprint 4** | Predictive dashboard + cloud pipeline | ⏳ Planned |
 | **Sprint 5** | Business case, documentation, demo | ⏳ Planned |
 
+Link to Jira :  https://sofiaafsar2003.atlassian.net/jira/software/projects/KAN/boards/2
