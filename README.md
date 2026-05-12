@@ -101,44 +101,45 @@ Two Power BI dashboards, each tailored to a specific audience:
 
 ---
 ### High Level Architecture
+
+```text
 ┌──────────────────────────────────────────────────────────────────────┐
-│                       LAYER 1 — DATA INGESTION                        │
-│                                                                       │
-│   📁 CSV / Excel files (shipment data from ops teams)                 │
-│              ↓                                                        │
-│   🐍 Python ingestion script (auto-pickup, validate, load)            │
-│              ↓                                                        │
+│                       LAYER 1 — DATA INGESTION                       │
+│                                                                      │
+│   📁 CSV / Excel files (shipment data from ops teams)                │
+│              ↓                                                       │
+│   🐍 Python ingestion script (auto-pickup, validate, load)           │
+│              ↓                                                       │
 │   ☁️  Cloud Database — Supabase (PostgreSQL)                          │
 └──────────────────────────────────────────────────────────────────────┘
                                   ↓
 ┌──────────────────────────────────────────────────────────────────────┐
-│                    LAYER 2 — PREDICTIVE ML ENGINE                     │
-│                                                                       │
-│   🧠 XGBoost Classifier  →  Demurrage Risk Score (0–100%)             │
-│   🧠 XGBoost Regressor   →  Predicted ₹ Cost Exposure                 │
-│   🔍 SHAP Explainer      →  Top 3 Root Cause Drivers                  │
+│                    LAYER 2 — PREDICTIVE ML ENGINE                    │
+│                                                                      │
+│   🧠 XGBoost Classifier  →  Demurrage Risk Score (0–100%)            │
+│   🧠 XGBoost Regressor   →  Predicted ₹ Cost Exposure                │
+│   🔍 SHAP Explainer      →  Top 3 Root Cause Drivers                 │
 │   🚦 Rule Logic          →  Risk Tier (🔴 / 🟡 / 🟢)                  │
-│              ↓                                                        │
-│   💾 Predictions written  to Supabase                             │
+│              ↓                                                       │
+│   💾 Predictions written back to Supabase                            │
 └──────────────────────────────────────────────────────────────────────┘
                                   ↓
 ┌──────────────────────────────────────────────────────────────────────┐
-│                    LAYER 3 — VISUALIZATION & ALERTS                   │
-│                                                                       │
-│   📊 Power BI Dashboard 1 — Operational View                          │
-│      (KPI strip • Shipment table • Action cards • Live alerts)        │
-│                                                                       │
-│   📊 Power BI Dashboard 2 — Strategic View                            │
-│      (Root cause • ₹ Saved • Forwarder scorecard • Cost trend)        │
-│                                                                       │
-│   🔔 Power Automate → Email/Teams alerts on Critical shipments        │
+│                  LAYER 3 — VISUALIZATION & ALERTS                    │
+│                                                                      │
+│   📊 Power BI Dashboard 1 — Operational View                         │
+│      (KPI strip • Shipment table • Action cards • Live alerts)       │
+│                                                                      │
+│   📊 Power BI Dashboard 2 — Strategic View                           │
+│      (Root cause • ₹ Saved • Forwarder scorecard • Cost trend)       │
+│                                                                      │
+│   🔔 Power Automate → Email/Teams alerts on Critical shipments       │
 └──────────────────────────────────────────────────────────────────────┘
                                   ↓
 ┌──────────────────────────────────────────────────────────────────────┐
-│                          END USERS                                    │
-│   🛃 Customs   |   🚛 Supply Chain Ops   |   📊 Product Managers       │
+│                             END USERS                                │
+│   🛃 Customs   |   🚛 Supply Chain Ops   |   📊 Product Managers      │
 └──────────────────────────────────────────────────────────────────────┘
-
 
 ## 👥 Target Users & Value Delivered
 
