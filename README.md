@@ -59,26 +59,86 @@ To ground this project in operational reality, a primary interview was conducted
 
 ## 💡 Proposed Solution
 
-A **cloud-hosted, end-to-end demurrage intelligence platform** that integrates **predictive machine learning** with **interactive Power BI dashboards** to deliver early warnings, root-cause diagnostics, and quantified ROI to the teams who can act on them.
+A **cloud-hosted, end-to-end demurrage intelligence platform** that combines **predictive machine learning** with **real-time dashboards** — moving demurrage management from reactive firefighting to proactive prevention.
 
-### What This Platform Does
+The platform ingests shipment data from CSV/Excel files, runs it through a lightweight ML engine that produces **four golden metrics** per shipment, and surfaces results via **two purpose-built Power BI dashboards** with built-in alerting.
 
-#### 1. Centralized Visibility (Real-Time Dashboards)
-- A **single source of truth** for shipment milestones — replacing scattered Excel sheets and carrier portals
-- **Pattern recognition** — surfaces which forwarders, ports, and routes consistently drive the highest fees
-- **Automated alerts** flagging containers **24–72 hours before free time expires**
-- **Resource utilization views** — port, warehouse, and team capacity at a glance
+---
 
-#### 2. Predictive Intelligence (Machine Learning Layer)
-- **Layer 1 — Risk Prediction:** XGBoost classifier predicting demurrage probability per shipment (0–100%)
-- **Layer 2 — Root Cause Diagnosis:** SHAP-based explainability identifying the **top 3 risk drivers** for every flagged shipment, mapped to the 8 real-world failure modes
-- **What-if simulation** — test the cost impact of alternate routing, port selection, or intervention timing
-- Weekly model retraining via GitHub Actions
+### 🧱 Three-Layer Architecture
 
-#### 3. Quantified Business Impact
-- ₹ savings model per prevented case, broken down by root cause
-- Defensible ROI projection — aligned with industry benchmarks of **10–15% logistics cost reduction** post digitization
-- Audit-ready timestamps that support **demurrage invoice disputes and recovery**
+#### **Layer 1 — Data Ingestion**
+Shipment data is auto-ingested from CSV/Excel files into a cloud-hosted PostgreSQL database (Supabase). No manual entry, no scattered spreadsheets — a single source of truth for all downstream analytics.
+
+#### **Layer 2 — Predictive ML Engine**
+A lightweight Python pipeline (~80 lines) using XGBoost and SHAP generates **four golden metrics** per shipment:
+
+| # | Metric | What It Tells You |
+|---|--------|-------------------|
+| 1 | **Demurrage Risk Score** (0–100%) | *Will* this shipment incur demurrage? |
+| 2 | **Predicted ₹ Cost Exposure** | *How much* will it cost? |
+| 3 | **Top 3 Root Cause Drivers** | *Why* is it risky? (mapped to 8 SME causes) |
+| 4 | **Risk Tier** (🔴 Critical / 🟡 Warning / 🟢 Safe) | *What action* should we take? |
+
+Predictions are written back to the database every 15 minutes.
+
+#### **Layer 3 — Visualization & Alerts**
+Two Power BI dashboards, each tailored to a specific audience:
+
+**📊 Dashboard 1 — Operational View** (Customs + Ops, daily users)
+- KPI strip: Critical / Warning / Safe shipment counts + ₹ at risk
+- High-risk shipment table (sortable, drill-down)
+- Smart Action Card per shipment (risk + drivers + recommended action + owner)
+- Live alerts panel for critical risks
+
+**📊 Dashboard 2 — Strategic View** (Product Managers + Leadership, weekly)
+- ₹ Saved this month (hero KPI with trend)
+- Root cause analysis — 8 causes ranked by ₹ cost
+- 12-week demurrage cost trend (lost vs. saved)
+- Forwarder scorecard with grades (A → D)
+
+**🔔 Alert Mechanism:** Power Automate triggers email/Teams notifications when any shipment crosses the Critical threshold (≥70% risk), routed to the assigned action owner with a 4-hour SLA.
+
+---
+### High Level Architecture
+┌──────────────────────────────────────────────────────────────────────┐
+│                       LAYER 1 — DATA INGESTION                        │
+│                                                                       │
+│   📁 CSV / Excel files (shipment data from ops teams)                 │
+│              ↓                                                        │
+│   🐍 Python ingestion script (auto-pickup, validate, load)            │
+│              ↓                                                        │
+│   ☁️  Cloud Database — Supabase (PostgreSQL)                          │
+└──────────────────────────────────────────────────────────────────────┘
+                                  ↓
+┌──────────────────────────────────────────────────────────────────────┐
+│                    LAYER 2 — PREDICTIVE ML ENGINE                     │
+│                                                                       │
+│   🧠 XGBoost Classifier  →  Demurrage Risk Score (0–100%)             │
+│   🧠 XGBoost Regressor   →  Predicted ₹ Cost Exposure                 │
+│   🔍 SHAP Explainer      →  Top 3 Root Cause Drivers                  │
+│   🚦 Rule Logic          →  Risk Tier (🔴 / 🟡 / 🟢)                  │
+│              ↓                                                        │
+│   💾 Predictions written  to Supabase                             │
+└──────────────────────────────────────────────────────────────────────┘
+                                  ↓
+┌──────────────────────────────────────────────────────────────────────┐
+│                    LAYER 3 — VISUALIZATION & ALERTS                   │
+│                                                                       │
+│   📊 Power BI Dashboard 1 — Operational View                          │
+│      (KPI strip • Shipment table • Action cards • Live alerts)        │
+│                                                                       │
+│   📊 Power BI Dashboard 2 — Strategic View                            │
+│      (Root cause • ₹ Saved • Forwarder scorecard • Cost trend)        │
+│                                                                       │
+│   🔔 Power Automate → Email/Teams alerts on Critical shipments        │
+└──────────────────────────────────────────────────────────────────────┘
+                                  ↓
+┌──────────────────────────────────────────────────────────────────────┐
+│                          END USERS                                    │
+│   🛃 Customs   |   🚛 Supply Chain Ops   |   📊 Product Managers       │
+└──────────────────────────────────────────────────────────────────────┘
+
 
 ## 👥 Target Users & Value Delivered
 
