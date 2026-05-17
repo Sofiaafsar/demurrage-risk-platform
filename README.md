@@ -43,7 +43,7 @@ To ground this project in operational reality, a primary interview was conducted
 | # | Root Cause | What Goes Wrong |
 |---|-----------|-----------------|
 | 1 | **IBD–Forwarder Misalignment** | Internal Inbound Delivery (IBD) records don't match the forwarder's data, blocking clearance |
-| 2 | **Address Errors & Invoice Re-creation** | Wrong consignee details trigger invoice rework, holding the container at port |
+| 2 | **IBD Data incorrect** | Wrong consignee details trigger invoice rework, holding the container at port |
 | 3 | **Unmonitored Free-Day Buffer** | Teams lose visibility on remaining free days, missing the intervention window |
 | 4 | **Email Coordination Lags** | Critical mails between forwarder, customs, and internal teams go unattended |
 | 5 | **SAP Duty Report Errors** | Incorrect duty calculations delay customs clearance |
@@ -61,7 +61,7 @@ To ground this project in operational reality, a primary interview was conducted
 
 A **cloud-hosted, end-to-end demurrage intelligence platform** that combines **predictive machine learning** with **real-time dashboards** — moving demurrage management from reactive firefighting to proactive prevention.
 
-The platform ingests shipment data from CSV/Excel files, runs it through a lightweight ML engine that produces **four golden metrics** per shipment, and surfaces results via **two purpose-built Power BI dashboards** with built-in alerting.
+The python script ingests shipment data based on the table data , runs it through a lightweight ML engine that produces metrics per shipment, and surfaces results via **two purpose-built Power BI dashboards** with built-in alerting.
 
 ---
 
