@@ -70,6 +70,8 @@ The python script ingests shipment data based on the table data , runs it throug
 #### **Layer 1 — Data Ingestion**
 Shipment data is auto-ingested from CSV/Excel files into a cloud-hosted PostgreSQL database (Supabase). No manual entry, no scattered spreadsheets — a single source of truth for all downstream analytics.
 
+Collab Link: https://colab.research.google.com/drive/1fQG1W8-xBu5sxQiy890P8cuythWIka3X#scrollTo=XXoO_guzjgtj
+Supabase Link: https://supabase.com/dashboard/project/zupzkmfbwprjzbibqaeq/editor/17696?schema=public
 #### **Layer 2 — Predictive ML Engine**
 A lightweight Python pipeline (~80 lines) using XGBoost and SHAP generates **four golden metrics** per shipment:
 
